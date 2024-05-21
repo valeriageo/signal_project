@@ -2,12 +2,12 @@ package com.data_management;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a patient and manages their medical records.
  * This class stores patient-specific data, allowing for the addition and
- * retrieval
- * of medical records based on specified criteria.
+ * retrieval of medical records based on specified criteria.
  */
 public class Patient {
     private int patientId;
@@ -24,14 +24,23 @@ public class Patient {
         this.patientRecords = new ArrayList<>();
     }
 
+    public int getPatientId()
+    {
+        return patientId;
+    }
+
+    public List<PatientRecord> getAllRecords()
+    {
+        return patientRecords;
+    }
+
     /**
      * Adds a new record to this patient's list of medical records.
      * The record is created with the specified measurement value, record type, and
      * timestamp.
      *
      * @param measurementValue the measurement value to store in the record
-     * @param recordType       the type of record, e.g., "HeartRate",
-     *                         "BloodPressure"
+     * @param recordType       the type of record, e.g., "HeartRate", "BloodPressure"
      * @param timestamp        the time at which the measurement was taken, in
      *                         milliseconds since UNIX epoch
      */
@@ -45,13 +54,16 @@ public class Patient {
      * specified time range.
      * The method filters records based on the start and end times provided.
      *
-     * @param startTime the start of the time range, in milliseconds since UNIX
-     *                  epoch
+     * @param startTime the start of the time range, in milliseconds since UNIX epoch
      * @param endTime   the end of the time range, in milliseconds since UNIX epoch
-     * @return a list of PatientRecord objects that fall within the specified time
-     *         range
+     * @return a list of PatientRecord objects that fall within the specified time range
      */
     public List<PatientRecord> getRecords(long startTime, long endTime) {
-        // TODO Implement and test this method
+        return this.patientRecords.stream()
+                .filter(record -> record.getTimestamp() >= startTime && record.getTimestamp() <= endTime)
+                .collect(Collectors.toList());
+    }
+
+    public void addRecord(PatientRecord temperature) {
     }
 }

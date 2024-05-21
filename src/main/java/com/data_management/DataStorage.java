@@ -79,7 +79,7 @@ public class DataStorage {
      * The main method for the DataStorage class.
      * Initializes the system, reads data into storage, and continuously monitors
      * and evaluates patient data.
-     * 
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {
@@ -100,10 +100,7 @@ public class DataStorage {
                     ", Timestamp: " + record.getTimestamp());
         }
 
-        // Initialize the AlertGenerator with the storage
         AlertGenerator alertGenerator = new AlertGenerator(storage);
-
-        // Evaluate all patients' data to check for conditions that may trigger alerts
         for (Patient patient : storage.getAllPatients()) {
             alertGenerator.evaluateData(patient);
         }
