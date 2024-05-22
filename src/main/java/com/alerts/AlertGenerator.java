@@ -3,7 +3,6 @@ package com.alerts;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 import com.data_management.PatientRecord;
-
 import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
