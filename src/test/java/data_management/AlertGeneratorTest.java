@@ -1,7 +1,5 @@
 package data_management;
 
-import java.util.List;
-
 import com.alerts.Alert;
 import com.alerts.AlertGenerator;
 import com.data_management.DataStorage;
@@ -9,9 +7,10 @@ import com.data_management.Patient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AlertGeneratorTest {
 
@@ -35,7 +34,7 @@ class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
         List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
 
-        assertEquals(2, triggeredAlerts.size());
+        assertEquals(3, triggeredAlerts.size());
         assertEquals("Trend", triggeredAlerts.get(0).getCondition());
     }
 
@@ -50,7 +49,7 @@ class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
         List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
 
-        assertEquals(2, triggeredAlerts.size());
+        assertEquals(4, triggeredAlerts.size());
         assertEquals("Trend", triggeredAlerts.get(0).getCondition());
     }
 
@@ -64,7 +63,50 @@ class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
         List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
 
-        assertEquals(1, triggeredAlerts.size());
+        assertEquals(4, triggeredAlerts.size());
         assertEquals("Critical Threshold", triggeredAlerts.get(0).getCondition());
+    }
+
+    @Test
+    void testLowSaturationAlert() {
+        Patient patient = new Patient(4);
+        long currentTime = System.currentTimeMillis();
+        patient.addRecord(91, "Saturation", currentTime);
+
+        alertGenerator.evaluateData(patient);
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
+
+        assertTrue(triggeredAlerts.stream()
+                        .anyMatch(alert -> alert.getCondition().equals("Low Saturation")),
+                "Low Saturation Alert was not triggered as expected");
+    }
+
+    @Test
+    void testRapidDropAlert() {
+        Patient patient = new Patient(5);
+        long currentTime = System.currentTimeMillis();
+        patient.addRecord(97, "Saturation", currentTime);
+        patient.addRecord(91, "Saturation", currentTime + 5000); // 5 seconds later
+
+        alertGenerator.evaluateData(patient);
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
+
+        assertTrue(triggeredAlerts.stream()
+                        .anyMatch(alert -> alert.getCondition().equals("Rapid Drop")),
+                "Rapid Drop Alert was not triggered as expected");
+    }
+
+    @Test
+    void testAbnormalTemperatureAlert() {
+        Patient patient = new Patient(6);
+        long currentTime = System.currentTimeMillis();
+        patient.addRecord(39, "Temperature", currentTime);
+
+        alertGenerator.evaluateData(patient);
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
+
+        assertTrue(triggeredAlerts.stream()
+                        .anyMatch(alert -> alert.getCondition().equals("Abnormal Temperature")),
+                "Abnormal Temperature Alert was not triggered as expected");
     }
 }

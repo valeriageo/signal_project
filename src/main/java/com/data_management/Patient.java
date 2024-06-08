@@ -24,13 +24,11 @@ public class Patient {
         this.patientRecords = new ArrayList<>();
     }
 
-    public int getPatientId()
-    {
+    public int getPatientId() {
         return patientId;
     }
 
-    public List<PatientRecord> getAllRecords()
-    {
+    public List<PatientRecord> getAllRecords() {
         return patientRecords;
     }
 
@@ -64,6 +62,7 @@ public class Patient {
                 .collect(Collectors.toList());
     }
 
-    public void addRecord(PatientRecord temperature) {
+    public void addRecord(PatientRecord record) {
+        this.patientRecords.add(record);
     }
 }

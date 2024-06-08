@@ -1,9 +1,15 @@
-package com.alerts;
+package data_management;
 
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.alerts.Alert;
+import com.alerts.AlertGenerator;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AlertGeneratorTest5 {
@@ -22,10 +28,16 @@ public class AlertGeneratorTest5 {
     @Test
     public void testLowSaturationAlert() {
         dataStorage.addPatientData(patientId, 91, "OxygenSaturation", System.currentTimeMillis());
+        // Ensure testPatient is updated
+        testPatient.addRecord(91, "OxygenSaturation", System.currentTimeMillis());
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
+        System.out.println(triggeredAlerts.toString());
+
         assertTrue("Low Saturation Alert was not triggered as expected",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
     }
 
     @Test
@@ -33,19 +45,28 @@ public class AlertGeneratorTest5 {
         long currentTime = System.currentTimeMillis();
         dataStorage.addPatientData(patientId, 97, "OxygenSaturation", currentTime - 600000); // 10 minutes ago
         dataStorage.addPatientData(patientId, 90, "OxygenSaturation", currentTime);
+        // Ensure testPatient is updated
+        testPatient.addRecord(97, "OxygenSaturation", currentTime - 600000);
+        testPatient.addRecord(90, "OxygenSaturation", currentTime);
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
         assertTrue("Rapid Drop Alert was not triggered as expected",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
     }
 
     @Test
     public void testNoLowSaturationAlert() {
         dataStorage.addPatientData(patientId, 93, "OxygenSaturation", System.currentTimeMillis());
+        // Ensure testPatient is updated
+        testPatient.addRecord(93, "OxygenSaturation", System.currentTimeMillis());
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
         assertFalse("Low Saturation Alert was triggered unexpectedly",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
     }
 
     @Test
@@ -53,30 +74,43 @@ public class AlertGeneratorTest5 {
         long currentTime = System.currentTimeMillis();
         dataStorage.addPatientData(patientId, 97, "OxygenSaturation", currentTime - 600000); // 10 minutes ago
         dataStorage.addPatientData(patientId, 95, "OxygenSaturation", currentTime);
+        // Ensure testPatient is updated
+        testPatient.addRecord(97, "OxygenSaturation", currentTime - 600000);
+        testPatient.addRecord(95, "OxygenSaturation", currentTime);
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
         assertFalse("Rapid Drop Alert was triggered unexpectedly",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
     }
 
     @Test
     public void testEdgeCaseLowSaturationAlert() {
         dataStorage.addPatientData(patientId, 92, "OxygenSaturation", System.currentTimeMillis());
+        // Ensure testPatient is updated
+        testPatient.addRecord(92, "OxygenSaturation", System.currentTimeMillis());
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
         assertFalse("Low Saturation Alert was triggered unexpectedly for threshold value",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Low Saturation")));
     }
 
     @Test
     public void testEdgeCaseRapidDropAlert() {
-
         long currentTime = System.currentTimeMillis();
         dataStorage.addPatientData(patientId, 97, "OxygenSaturation", currentTime - 600000); // 10 minutes ago
         dataStorage.addPatientData(patientId, 92, "OxygenSaturation", currentTime);
+        // Ensure testPatient is updated
+        testPatient.addRecord(97, "OxygenSaturation", currentTime - 600000);
+        testPatient.addRecord(92, "OxygenSaturation", currentTime);
+
         alertGenerator.evaluateData(testPatient);
+
+        List<Alert> triggeredAlerts = alertGenerator.getTriggeredAlerts();
         assertTrue("Rapid Drop Alert was not triggered as expected for edge case",
-                alertGenerator.getTriggeredAlerts().stream()
-                        .anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
+                triggeredAlerts.stream().anyMatch(alert -> alert.getCondition().equals("Rapid Drop")));
     }
 }

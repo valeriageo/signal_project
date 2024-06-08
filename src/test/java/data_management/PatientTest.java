@@ -1,9 +1,8 @@
 package data_management;
 
-import com.data_management.Patient;
-import com.data_management.PatientRecord;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import com.data_management.*;
 
 import java.util.List;
 
@@ -30,5 +29,5 @@ class PatientTest {
         assertEquals(120.0, records.get(1).getMeasurementValue());
         assertEquals("BloodPressure", records.get(1).getRecordType());
         assertEquals(1625184000000L, records.get(1).getTimestamp());
-    }
+    } 
 }

@@ -67,4 +67,11 @@ public class PatientRecord {
     public String getRecordType() {
         return recordType;
     }
+    public double getBloodPressure() {
+        if ("BloodPressure".equalsIgnoreCase(recordType)) {
+            return measurementValue;
+        } else {
+            throw new UnsupportedOperationException("This record does not represent blood pressure.");
+        }
+    }
 }
