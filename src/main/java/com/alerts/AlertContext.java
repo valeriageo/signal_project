@@ -1,6 +1,7 @@
-package strategies.com;
+package com.alerts;
 
 import com.data_management.Patient;
+import strategies.com.AlertStrategy;
 
 public class AlertContext {
     private AlertStrategy alertStrategy;

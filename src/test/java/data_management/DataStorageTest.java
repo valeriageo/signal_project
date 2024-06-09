@@ -1,16 +1,15 @@
 package data_management;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.data_management.DataReader;
-import com.data_management.MockDataReader;
-import org.junit.jupiter.api.Test;
-
 import com.data_management.DataStorage;
+import com.data_management.MockDataReader;
 import com.data_management.PatientRecord;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class DataStorageTest {
 
@@ -18,7 +17,12 @@ class DataStorageTest {
     void testAddAndGetRecords()
     {
         // TODO Perhaps you can implement a mock data reader to mock the test data?
-        DataReader reader = new MockDataReader();
+        DataReader reader = new MockDataReader() {
+            @Override
+            public void connectAndReadData(DataStorage dataStorage) throws IOException {
+
+            }
+        };
         DataStorage storage = new DataStorage();
         try
         {

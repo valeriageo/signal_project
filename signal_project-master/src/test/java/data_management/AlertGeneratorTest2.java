@@ -1,12 +1,10 @@
-package data_management;
+package com.alerts;
 
-import com.alerts.AlertGenerator;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 class AlertGeneratorTest2 {
     private DataStorage dataStorage;

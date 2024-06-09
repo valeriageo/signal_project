@@ -2,7 +2,7 @@ package com.data_management;
 
 import java.io.IOException;
 
-public abstract class MockDataReader implements DataReader
+public class MockDataReader implements DataReader
 {
     @Override
     public void readData(DataStorage dataStorage) throws IOException
@@ -10,5 +10,4 @@ public abstract class MockDataReader implements DataReader
         dataStorage.addPatientData(1, 100.0, "WhiteBloodCells", 1714376789050L);
         dataStorage.addPatientData(1, 200.0, "WhiteBloodCells", 1714376789051L);
     }
-    
 }

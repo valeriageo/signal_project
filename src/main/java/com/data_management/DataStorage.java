@@ -1,7 +1,7 @@
 package com.data_management;
 
-import com.alerts.AlertGenerator;
 import com.alerts.Alert;
+import com.alerts.AlertGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
